@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: Notes API
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /api/notes:
+    get:
+      summary: Tüm notları getir
+      responses:
+        '200':
+          description: Not listesi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+    post:
+      summary: Yeni not ekle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewNote'
+      responses:
+        '200':
+          description: Eklenen not
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: content eksik
+  /api/notes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Tek notu getir
+      responses:
+        '200':
+          description: Not
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Not bulunamadı
+    delete:
+      summary: Notu sil
+      responses:
+        '204':
+          description: Silindi
+components:
+  schemas:
+    Note:
+      type: object
+      properties:
+        id: { type: string, example: '1' }
+        content: { type: string, example: HTML is easy }
+        important: { type: boolean, example: true }
+    NewNote:
+      type: object
+      required: [content]
+      properties:
+        content: { type: string, example: Yeni not }
+        important: { type: boolean, example: false }

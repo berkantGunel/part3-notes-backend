@@ -1,5 +1,9 @@
 const express = require('express')
 const app = express()
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(YAML.load('./openapi.yaml')))
 
 let notes = [
   {
@@ -20,6 +24,7 @@ let notes = [
 ]
 
 app.use(express.json())
+app.use(express.static('dist'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
